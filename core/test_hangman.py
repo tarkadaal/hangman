@@ -30,6 +30,8 @@ class HangmanStartGameTests(unittest.TestCase):
     def test_game_has_lives_left(self):
         self.assertEqual(5, self.result.lives_left)
 
+    def test_game_has_has_won(self):
+        self.assertFalse(self.result.has_won)
 
 class HangmanTakeTurnTests(unittest.TestCase):
     def test_state_cannot_be_none(self):
@@ -40,58 +42,85 @@ class HangmanTakeTurnTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             hangman.take_turn(hangman.start_game(), None)
 
+    def _test_take_turn_core(self,
+        state,
+        guess,
+        expected_is_finished,
+        expected_current_discovered,
+        expected_lives_left,
+        expected_has_won=False
+    ):
+        result = hangman.take_turn(state, guess)
+        self.assertEqual(expected_is_finished, result.is_finished)
+        self.assertEqual(state.target_word, result.target_word)
+        self.assertEqual(
+            expected_current_discovered,
+            result.current_discovered
+        )
+        self.assertEqual(expected_lives_left, result.lives_left)
+        self.assertEqual(expected_has_won, result.has_won)
+
     #pass in correct letter you don't have
     def test_pass_in_correct_letter_we_dont_have(self):
         state = hangman.HangmanState(["monitor"])
-        result = hangman.take_turn(state, "o")
-        self.assertEqual(False, result.is_finished)
-        self.assertEqual(state.target_word, result.target_word)
-        self.assertEqual(
+        self._test_take_turn_core(
+            state,
+            "o",
+            False,
             [None, "o", None, None, None, "o", None],
-            result.current_discovered
+            state.lives_left
         )
-        self.assertEqual(state.lives_left, result.lives_left)
 
 
     #pass in correct letter you have
     def test_pass_in_correct_letter_we_have(self):
         state = hangman.HangmanState(["monitor"])
         state.current_discovered = [None, "o", None, None, None, "o", None]
-        result = hangman.take_turn(state, "o")
-        self.assertEqual(False, result.is_finished)
-        self.assertEqual(state.target_word, result.target_word)
-        self.assertEqual(
+        self._test_take_turn_core(
+            state,
+            "o",
+            False,
             [None, "o", None, None, None, "o", None],
-            result.current_discovered
+            state.lives_left
         )
-        self.assertEqual(state.lives_left, result.lives_left)
 
     #pass in final correct letter
     def test_pass_in_final_correct_letter(self):
         state = hangman.HangmanState(["monitor"])
         state.current_discovered = ["m", "o", "n", None, "t", "o", "r"]
-        result = hangman.take_turn(state, "i")
-        self.assertEqual(True, result.is_finished)
-        self.assertEqual(state.target_word, result.target_word)
-        self.assertEqual(
+        self._test_take_turn_core(
+            state,
+            "i",
+            True,
             ["m", "o", "n", "i", "t", "o", "r"],
-            result.current_discovered
+            state.lives_left,
+            True
         )
-        self.assertEqual(state.lives_left, result.lives_left)
 
     #pass in incorrect letter
     def test_guess_incorrect_letter(self):
         state = hangman.HangmanState(["monitor"])
-        result = hangman.take_turn(state, "x")
-        self.assertEqual(False, result.is_finished)
-        self.assertEqual(state.target_word, result.target_word)
-        self.assertEqual(
+        self._test_take_turn_core(
+            state,
+            "x",
+            False,
             state.current_discovered,
-            result.current_discovered
+            state.lives_left - 1
         )
-        self.assertEqual(state.lives_left -1 , result.lives_left)
 
     #pass in incorrect letter when you're on your last life
+    def test_guess_incorrectly_and_lose_last_life(self):
+        state = hangman.HangmanState(["monitor"])
+        state.lives_left = 1
+        self._test_take_turn_core(
+            state,
+            "x",
+            True,
+            state.current_discovered,
+            0
+        )
+
+    #should store win/loss, not just finished
     #pass in finished game
     #pass in multi-character guess
 

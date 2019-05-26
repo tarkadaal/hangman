@@ -14,6 +14,10 @@ class HangmanState():
         self.current_discovered = [None for x in range(len(self.target_word))]
         self.lives_left = LIVES
 
+    @property
+    def has_won(self):
+        return self.is_finished and None not in self.current_discovered
+
 
 def start_game():
     return HangmanState()
@@ -36,7 +40,8 @@ def take_turn(state, guess):
         new_state.is_finished = None not in new_state.current_discovered
     else:
         new_state.lives_left -= 1
-    
+        if new_state.lives_left == 0:
+            new_state.is_finished = True
     return new_state
 
 
