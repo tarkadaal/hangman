@@ -33,6 +33,9 @@ class HangmanStartGameTests(unittest.TestCase):
     def test_game_has_has_won(self):
         self.assertFalse(self.result.has_won)
 
+    def test_game_has_was_last_guess_correct(self):
+        self.assertIsNone(self.result.was_last_guess_correct)
+
 class HangmanTakeTurnTests(unittest.TestCase):
     def test_state_cannot_be_none(self):
         with self.assertRaises(ValueError):
@@ -57,6 +60,7 @@ class HangmanTakeTurnTests(unittest.TestCase):
         expected_is_finished,
         expected_current_known,
         expected_lives_left,
+        expected_was_last_guess_correct,
         expected_has_won=False
     ):
         result = hangman.take_turn(state, guess)
@@ -67,6 +71,7 @@ class HangmanTakeTurnTests(unittest.TestCase):
             result.current_known
         )
         self.assertEqual(expected_lives_left, result.lives_left)
+        self.assertEqual(expected_was_last_guess_correct, result.was_last_guess_correct)
         self.assertEqual(expected_has_won, result.has_won)
 
 
@@ -77,7 +82,8 @@ class HangmanTakeTurnTests(unittest.TestCase):
             "o",
             False,
             [None, "o", None, None, None, "o", None],
-            state.lives_left
+            state.lives_left,
+            True
         )
 
 
@@ -89,7 +95,8 @@ class HangmanTakeTurnTests(unittest.TestCase):
             "o",
             False,
             [None, "o", None, None, None, "o", None],
-            state.lives_left
+            state.lives_left,
+            True
         )
 
     def test_pass_in_final_correct_letter(self):
@@ -101,6 +108,7 @@ class HangmanTakeTurnTests(unittest.TestCase):
             True,
             ["m", "o", "n", "i", "t", "o", "r"],
             state.lives_left,
+            True,
             True
         )
 
@@ -111,7 +119,8 @@ class HangmanTakeTurnTests(unittest.TestCase):
             "x",
             False,
             state.current_known,
-            state.lives_left - 1
+            state.lives_left - 1,
+            False
         )
 
     def test_guess_incorrectly_and_lose_last_life(self):
@@ -122,7 +131,9 @@ class HangmanTakeTurnTests(unittest.TestCase):
             "x",
             True,
             state.current_known,
-            0
+            0,
+            False,
+            False
         )
 
     def test_raises_if_game_is_finished(self):
@@ -137,6 +148,7 @@ class HangmanTakeTurnTests(unittest.TestCase):
                 True,
                 state.current_known,
                 3,
+                True,
                 True
             )
 

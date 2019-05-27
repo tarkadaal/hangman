@@ -1,7 +1,7 @@
 import random
 import copy
 
-TARGET_WORDS =[
+TARGET_WORDS = [
     "3dhubs", "marvin", "print", "filament", "order", "layer"
 ]
 LIVES = 5
@@ -13,6 +13,7 @@ class HangmanState():
         self.target_word = target_words[target]
         self.current_known = [None for x in range(len(self.target_word))]
         self.lives_left = LIVES
+        self.was_last_guess_correct = None
 
     @property
     def has_won(self):
@@ -39,7 +40,8 @@ def take_turn(state, guess):
         raise ValueError("The 'guess' parameter must be a single character.")
 
     new_state = copy.copy(state)
-    if guess in state.target_word:
+    new_state.was_last_guess_correct = guess in state.target_word
+    if new_state.was_last_guess_correct:
         new_state.current_known = _calculate_new_known(
             state.target_word,
             state.current_known,

@@ -11,6 +11,14 @@ def prompt_for_guess():
     return input("Guess a letter: ")
 
 
+def print_was_guess_correct(state):
+    if state.was_last_guess_correct:
+        print("Nice guess!")
+    else:
+        print("Ah, it's close, but it's not the one.")
+        print("You lose a life.")
+
+
 def main():
     print("Welcome to Hangman!")
     state = hangman.start_game()
@@ -18,9 +26,10 @@ def main():
         print_state(state)
         guess = prompt_for_guess()
         state = hangman.take_turn(state, guess)
+        print_was_guess_correct(state)
     
     if state.has_won:
-        print("Well done")
+        print("Well done!")
     else:
         print("Sorry, better luck next time.")
 
