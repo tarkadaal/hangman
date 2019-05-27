@@ -77,3 +77,16 @@ def format_current_known(known):
 
     santized = [x if x else "_" for x in known]
     return "".join(santized)
+
+
+def calculate_score(state):
+    if not state:
+        raise ValueError("The 'state' parameter must be a valid hangman game state.")
+
+    if not state.is_finished:
+        raise ValueError("An unfinished game cannot be scored.")
+
+    if not state.has_won:
+        return 0
+    else:
+        return state.lives_left

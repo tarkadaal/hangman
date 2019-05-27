@@ -176,5 +176,32 @@ class HangmanStringFormatterTests(unittest.TestCase):
         )
         self.assertEqual("utility", result)
 
+
+class HangmanScoringTests(unittest.TestCase):
+    def test_raises_on_none(self):
+        with self.assertRaises(ValueError):
+            hangman.calculate_score(None)
+
+    def test_raises_if_game_not_finished(self):
+        with self.assertRaises(ValueError):
+            hangman.calculate_score(hangman.start_game())
+
+    def test_lost_game_is_zero_points(self):
+        state = hangman.start_game(["printer"])
+        state.is_finished = True
+        result = hangman.calculate_score(state)
+        self.assertEqual(0, result)
+
+    def test_when_game_won_score_is_equal_to_lives_left(self):
+        state = hangman.start_game(["printer"])
+        state.current_known = list(state.target_word)
+        state.is_finished = True
+        for x in range(1, 6):
+            state.lives_left = x
+            result = hangman.calculate_score(state)
+            self.assertEqual(x, result)
+
+
+
 if __name__ == '__main__':
     unittest.main()
