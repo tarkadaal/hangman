@@ -39,6 +39,10 @@ def take_turn(state, guess):
     if not len(guess) == 1:
         raise ValueError("The 'guess' parameter must be a single character.")
 
+    return _take_turn(state, guess)
+
+
+def _take_turn(state, guess):
     new_state = copy.copy(state)
     new_state.was_last_guess_correct = guess in state.target_word
     if new_state.was_last_guess_correct:
@@ -50,8 +54,7 @@ def take_turn(state, guess):
         new_state.is_finished = None not in new_state.current_known
     else:
         new_state.lives_left -= 1
-        if new_state.lives_left == 0:
-            new_state.is_finished = True
+        new_state.is_finished = new_state.lives_left == 0
     return new_state
 
 
@@ -60,7 +63,7 @@ def _calculate_new_known(target, current_known, guess, modifier=0):
     new_known = copy.copy(current_known)
     new_known[index + modifier] = guess
 
-    rest = target[index+1:]
+    rest = target[index + 1:]
     if guess in rest:
         new_known = _calculate_new_known(
             rest,
@@ -86,7 +89,4 @@ def calculate_score(state):
     if not state.is_finished:
         raise ValueError("An unfinished game cannot be scored.")
 
-    if not state.has_won:
-        return 0
-    else:
-        return state.lives_left
+    return state.lives_left if state.has_won else 0
