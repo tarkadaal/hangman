@@ -3,7 +3,7 @@ This is a simple implementation of Hangman.
 ## Project Structure
 There are three main components:
 * *Core:* This is the library that contains the main Hangman logic.
-* *Hangman.py:* This is a simple CLI that uses the library to play the game.
+* *play_hangman.py:* This is a simple CLI that uses the library to play the game.
 * *API:* This is an HTTP REST API that exposes the Core functionality.
 
 ## Core

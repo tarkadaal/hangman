@@ -27,7 +27,7 @@ def main():
         guess = prompt_for_guess()
         state = hangman.take_turn(state, guess)
         print_was_guess_correct(state)
-    
+
     if state.has_won:
         print("Well done!")
     else:
