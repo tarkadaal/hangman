@@ -1,28 +1,16 @@
 import random
 import copy
+from core.hangman_state import HangmanState
 
 TARGET_WORDS = [
     "3dhubs", "marvin", "print", "filament", "order", "layer"
 ]
 LIVES = 5
 
-class HangmanState():
-    def __init__(self, target_words):
-        self.is_finished = False
-        target = random.randint(0, len(target_words) - 1)
-        self.target_word = target_words[target]
-        self.current_known = [None for x in range(len(self.target_word))]
-        self.lives_left = LIVES
-        self.was_last_guess_correct = None
-
-    @property
-    def has_won(self):
-        return self.is_finished and None not in self.current_known
-
 
 def start_game(possible_words=None):
     words = possible_words if possible_words else TARGET_WORDS
-    return HangmanState(words)
+    return HangmanState.create(words, LIVES)
 
 
 def take_turn(state, guess):

@@ -76,7 +76,7 @@ class HangmanTakeTurnTests(unittest.TestCase):
 
 
     def test_pass_in_correct_letter_we_dont_have(self):
-        state = hangman.HangmanState(["monitor"])
+        state = hangman.HangmanState.create(["monitor"], 5)
         self._test_take_turn_core(
             state,
             "o",
@@ -88,7 +88,7 @@ class HangmanTakeTurnTests(unittest.TestCase):
 
 
     def test_pass_in_correct_letter_we_have(self):
-        state = hangman.HangmanState(["monitor"])
+        state = hangman.HangmanState.create(["monitor"], 5)
         state.current_known = [None, "o", None, None, None, "o", None]
         self._test_take_turn_core(
             state,
@@ -100,7 +100,7 @@ class HangmanTakeTurnTests(unittest.TestCase):
         )
 
     def test_pass_in_final_correct_letter(self):
-        state = hangman.HangmanState(["monitor"])
+        state = hangman.HangmanState.create(["monitor"], 5)
         state.current_known = ["m", "o", "n", None, "t", "o", "r"]
         self._test_take_turn_core(
             state,
@@ -113,7 +113,7 @@ class HangmanTakeTurnTests(unittest.TestCase):
         )
 
     def test_guess_incorrect_letter(self):
-        state = hangman.HangmanState(["monitor"])
+        state = hangman.HangmanState.create(["monitor"], 5)
         self._test_take_turn_core(
             state,
             "x",
@@ -124,7 +124,7 @@ class HangmanTakeTurnTests(unittest.TestCase):
         )
 
     def test_guess_incorrectly_and_lose_last_life(self):
-        state = hangman.HangmanState(["monitor"])
+        state = hangman.HangmanState.create(["monitor"], 5)
         state.lives_left = 1
         self._test_take_turn_core(
             state,
@@ -137,7 +137,7 @@ class HangmanTakeTurnTests(unittest.TestCase):
         )
 
     def test_raises_if_game_is_finished(self):
-        state = hangman.HangmanState(["string"])
+        state = hangman.HangmanState.create(["string"], 5)
         state.is_finished = True
         state.current_known = list(state.target_word)
         state.lives_left = 3
