@@ -1,0 +1,9 @@
+body{
+    background-color: darkcyan;
+    color: whitesmoke;
+    font-family: monospace;
+    font-size: 28pt
+}
+#current_known{
+    letter-spacing: 0.5em;
+}
