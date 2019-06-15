@@ -2,7 +2,9 @@ import core.hangman as hangman
 from core.hangman_state import HangmanState
 
 from flask import Flask, jsonify, request
+from flask_cors import CORS
 app = Flask(__name__)
+CORS(app)
 
 @app.route('/')
 def hello_world():
@@ -29,7 +31,8 @@ def _dictify_game_state(state):
         "current_known": state.current_known,
         "lives_left": state.lives_left,
         "was_last_guess_correct": state.was_last_guess_correct,
-        "has_won": state.has_won
+        "has_won": state.has_won,
+        "printable_known": hangman.format_current_known(state.current_known)
     }
 
 def _classify_game_state(json):
