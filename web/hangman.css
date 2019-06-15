@@ -7,3 +7,11 @@ body{
 #current_known{
     letter-spacing: 0.5em;
 }
+button {
+    background-color: darkturquoise;
+    color: white;
+    padding: 0.5em 0.5em;
+    text-align: center;
+    font-family: monospace;
+    font-size: 1em
+}
