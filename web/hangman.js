@@ -1,7 +1,8 @@
 (function(){
+    var base_url = 'http://192.168.1.42:5000/';
     var start_request;
-    var start_game_url = 'http://127.0.0.1:5000/hangman/api/start_game';
-    var take_turn_url = 'http://127.0.0.1:5000/hangman/api/take_turn';
+    var start_game_url = base_url + 'hangman/api/start_game';
+    var take_turn_url = base_url + 'hangman/api/take_turn';
     var current_data;
 
     function guess_button_handler() {
@@ -41,5 +42,5 @@
         start_request.send();
     }
 
-    window.onload = main;
+    main();
 }());
