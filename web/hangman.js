@@ -17,9 +17,28 @@
 
     function play(data){
         var known = document.getElementById("current_known");
-        known.innerHTML = data.printable_known;
         var lives_left = document.getElementById("lives_left");
-        lives_left.innerHTML= "Lives left: " + data.lives_left;
+        var status = document.getElementById("status");
+
+        known.innerHTML = data.printable_known;
+        lives_left.innerHTML = "Lives left: " + data.lives_left;
+        if(data.is_finished){
+            if (data.was_last_guess_correct == true) {
+                status.innerHTML = "YOU WIN!";
+            }
+            if (data.was_last_guess_correct == false) {
+                status.innerHTML = "GAME OVER :(";
+            }
+        }
+        else {
+            if (data.was_last_guess_correct == true) {
+                status.innerHTML = "Good guess!";
+            }
+            if (data.was_last_guess_correct == false) {
+                status.innerHTML = "Bad guess!";
+            }
+        };
+
     }
 
 
