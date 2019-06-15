@@ -25,7 +25,7 @@ def take_turn():
 
 
 def _dictify_game_state(state):
-    return {
+    dict_state = {
         "is_finished": state.is_finished,
         "target_word": state.target_word,
         "current_known": state.current_known,
@@ -34,6 +34,9 @@ def _dictify_game_state(state):
         "has_won": state.has_won,
         "printable_known": hangman.format_current_known(state.current_known)
     }
+    if state.is_finished:
+        dict_state["score"] = hangman.calculate_score(state)
+    return dict_state
 
 def _classify_game_state(json):
     return HangmanState(

@@ -20,6 +20,7 @@
         var lives_left = document.getElementById("lives_left");
         var status = document.getElementById("status");
         var button = document.getElementById("guess");
+        var score = document.getElementById("score");
         known.innerHTML = data.printable_known;
         lives_left.innerHTML = "Lives left: " + data.lives_left;
         if(data.is_finished){
@@ -30,6 +31,7 @@
                 status.innerHTML = "GAME OVER :(";
             }
             button.style.visibility = "collapse";
+            score.innerHTML = "You scored: " + data.score;
         }
         else {
             if (data.was_last_guess_correct == true) {
