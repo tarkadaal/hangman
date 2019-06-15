@@ -21,8 +21,12 @@
         var status = document.getElementById("status");
         var button = document.getElementById("guess");
         var score = document.getElementById("score");
+        var high_score = document.getElementById("high_score");
         known.innerHTML = data.printable_known;
+        console.log(data);
         lives_left.innerHTML = "Lives left: " + data.lives_left;
+        high_score_label = data.is_new_high_score ? "NEW HIGH SCORE: " : "High score: "
+        high_score.innerHTML = high_score_label + data.high_score;
         if(data.is_finished){
             if (data.was_last_guess_correct == true) {
                 status.innerHTML = "YOU WIN!";
