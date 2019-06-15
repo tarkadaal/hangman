@@ -10,25 +10,21 @@ CORS(app)
 
 STORAGE = "./high_scores"
 
-@app.route('/')
-def hello_world():
-    return "Hello, World!"
-
 @app.route('/hangman/api/start_game')
 def start_game():
     state = hangman.start_game()
-    dict_state = _dictify_game_state(state)
+    dict_state = _prepare_game_state(state)
     return jsonify(dict_state)
 
 @app.route('/hangman/api/take_turn', methods=['POST'])
 def take_turn():
     state = _classify_game_state(request.json)
     new_state = hangman.take_turn(state, request.json["guess"])
-    dict_state = _dictify_game_state(new_state)
+    dict_state = _prepare_game_state(new_state)
     return jsonify(dict_state)
 
 
-def _dictify_game_state(state):
+def _prepare_game_state(state):
     dict_state = {
         "is_finished": state.is_finished,
         "target_word": state.target_word,

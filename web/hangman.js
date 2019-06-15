@@ -23,7 +23,6 @@
         var score = document.getElementById("score");
         var high_score = document.getElementById("high_score");
         known.innerHTML = data.printable_known;
-        console.log(data);
         lives_left.innerHTML = "Lives left: " + data.lives_left;
         high_score_label = data.is_new_high_score ? "NEW HIGH SCORE: " : "High score: "
         high_score.innerHTML = high_score_label + data.high_score;
