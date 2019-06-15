@@ -19,7 +19,7 @@
         var known = document.getElementById("current_known");
         var lives_left = document.getElementById("lives_left");
         var status = document.getElementById("status");
-
+        var button = document.getElementById("guess");
         known.innerHTML = data.printable_known;
         lives_left.innerHTML = "Lives left: " + data.lives_left;
         if(data.is_finished){
@@ -29,6 +29,7 @@
             if (data.was_last_guess_correct == false) {
                 status.innerHTML = "GAME OVER :(";
             }
+            button.style.visibility = "collapse";
         }
         else {
             if (data.was_last_guess_correct == true) {
